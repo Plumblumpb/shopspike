@@ -29,15 +29,19 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 //  获取 实体数据
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+//		获取request
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+//		获取response
 		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
 //		从参数中得到
 		String paramToken = request.getParameter(MiaoshaUserService.COOKI_NAME_TOKEN);
 //		从cookie中得到
 		String cookieToken = getCookieValue(request, MiaoshaUserService.COOKI_NAME_TOKEN);
+
 		if(StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
 			return null;
 		}
+//		判断是从cookie中得到的还是url参数
 		String token = StringUtils.isEmpty(paramToken)?cookieToken:paramToken;
 		return userService.getByToken(response, token);
 	}
@@ -47,6 +51,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 		if(cookies == null || cookies.length ==0){
 			return null;
 		}
+//		获取cookie中的user
 		for(Cookie cookie : cookies) {
 			if(cookie.getName().equals(cookiName)) {
 				return cookie.getValue();

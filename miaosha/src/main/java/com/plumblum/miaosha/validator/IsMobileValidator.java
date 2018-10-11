@@ -17,11 +17,11 @@ import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
 public class IsMobileValidator implements ConstraintValidator<IsMobile, String> {
 
     private boolean required = false;
-
+//  初始化注解
     public void initialize(IsMobile isMobile) {
         required = isMobile.required();
     }
-
+//  验证
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if(required) {
             return ValidatorUtil.isMobile(value);
